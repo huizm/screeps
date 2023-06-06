@@ -1,9 +1,4 @@
 const ROLE_SHORTAGE = 'builder';
-// const TYPES = {
-//         'harvester': 2,
-//         'builder': 6,
-//         'upgrader': 2
-//     };
 const TYPES = [
     harvester = {
         quantity: 2,
