@@ -29,6 +29,7 @@ let roleBuilder = require('role.builder');
 let roleTransferer = require('role.transferer');
 let roleMiner = require('role.miner');
 
+
 /** @param {string} type **/
 function spawnCreepWithErrorCode(type) {
     let newName = type.charAt(0).toUpperCase() + type.slice(1) + Game.time;
