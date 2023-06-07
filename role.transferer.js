@@ -23,7 +23,7 @@ function transferToOtherContainer(creep) {
 
 let roleTransferer = { // TODO: refactor
 
-    /* @param {Creep} creep */
+    /** @param {Creep} creep **/
     run: function(creep) {
 
 	    if (creep.store.getFreeCapacity() > 0) {

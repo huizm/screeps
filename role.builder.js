@@ -32,7 +32,7 @@ function replenishEnergy(creep) {
 
 let roleBuilder = {
 
-    /* @param {Creep} creep */
+    /** @param {Creep} creep **/
     run: function(creep) {
 
 	    if (creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {

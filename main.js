@@ -29,6 +29,36 @@ let roleBuilder = require('role.builder');
 let roleTransferer = require('role.transferer');
 let roleMiner = require('role.miner');
 
+/** @param {string} type **/
+function spawnCreepWithErrorCode(type) {
+    let newName = type.charAt(0).toUpperCase() + type.slice(1) + Game.time;
+            
+    switch (Game.spawns['Spawn1'].spawnCreep(TYPES[type].body, newName, {memory: {role: type}})) {
+        case 0:
+            console.log('Spawning new creep of ' + type + ' named ' + newName);
+            break;
+        case -1:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NOT_OWNER (-1)');
+            break;
+        case -3:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NAME_EXISTS (-3)');
+            break;
+        case -4:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_BUSY (-4)');
+            break;
+        case -6:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NOT_ENOUGH_ENERGY (-6)');
+            break;
+        case -10:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_INVALID_ARGS (-10)');
+            break;
+        case -14:
+            console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_RCL_NOT_ENOUGH (-14)');
+            break;
+    };
+}
+
+
 module.exports.loop = function () {
     
     // clear creep memory who no longer exists
@@ -48,31 +78,7 @@ module.exports.loop = function () {
         typeCount += `${type}: ${existings.length}/${TYPES[type].quantity}, `;
         
         if (existings.length < TYPES[type].quantity && continueSpawning && AUTO_SPAWN) {
-            let newName = type.charAt(0).toUpperCase() + type.slice(1) + Game.time;
-            
-            switch (Game.spawns['Spawn1'].spawnCreep(TYPES[type].body, newName, {memory: {role: type}})) {
-                case 0:
-                    console.log('Spawning new creep of ' + type + ' named ' + newName);
-                    break;
-                case -1:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NOT_OWNER (-1)');
-                    break;
-                case -3:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NAME_EXISTS (-3)');
-                    break;
-                case -4:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_BUSY (-4)');
-                    break;
-                case -6:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_NOT_ENOUGH_ENERGY (-6)');
-                    break;
-                case -10:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_INVALID_ARGS (-10)');
-                    break;
-                case -14:
-                    console.log('Failed to spawn ' + type + ' named ' + newName + ': ' + 'ERR_RCL_NOT_ENOUGH (-14)');
-                    break;
-            }
+            spawnCreepWithErrorCode(type);
             continueSpawning = false;
         }
     }
@@ -85,7 +91,7 @@ module.exports.loop = function () {
         let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 
         if ((miners.length <= 1 || transferers.length <= 2) && harvesters.length < 3) {
-            Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE], 'EnergySaver' + Game.time, {memory: {role: 'harvester'}});
+            spawnCreepWithErrorCode('harvester');
             console.log('Spawning harvester to save energy!');
         }
     }

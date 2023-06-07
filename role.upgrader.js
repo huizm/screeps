@@ -32,7 +32,7 @@ function replenishEnergy(creep) {
 
 let roleUpgrader = {
     
-    /* @param {Creep} creep */
+    /** @param {Creep} creep **/
     run: function(creep) {
         
         // check and toggle harvesting flag

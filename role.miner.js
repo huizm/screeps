@@ -13,7 +13,7 @@
 
 let roleMiner = {
 
-    /* @param {Creep} creep */
+    /** @param {Creep} creep **/
     run: function(creep) {
         
         let sites = creep.room.find(FIND_STRUCTURES, {
