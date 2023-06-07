@@ -11,7 +11,7 @@ let roleRecycling = {
 
     /** @param {Creep} creep */
     run: function(creep) {
-        let spawn = creep.room.find(FIND_STRUCTURE, {
+        let spawn = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_SPAWN;
             }
@@ -22,3 +22,5 @@ let roleRecycling = {
         }
     }
 }
+
+module.exports = roleRecycling;
