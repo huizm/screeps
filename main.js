@@ -1,30 +1,33 @@
+const AUTO_SPAWN = true;
 const ROLE_SHORTAGE = 'builder';
-const TYPES = [
-    harvester = {
-        quantity: 2,
+const TYPES = {
+    'harvester': {
+        quantity: 1,
         body: [WORK, CARRY, MOVE]
     },
-    builder = {
-        quantity: 6,
+    'builder': {
+        quantity: 1,
         body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
     },
-    upgrader = {
-        quantity: 2,
+    'upgrader': {
+        quantity: 1,
         body: [WORK, CARRY, CARRY, MOVE, MOVE]
     },
-    // miner = {
-    //     quantity: 0,
-    //     body: [WORK, WORK, WORK, WORK, MOVE]
-    // },
-    // transferer = {
-    //     quantity: 0,
-    //     body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
-    // }
-];
+    'miner': {
+        quantity: 1,
+        body: [WORK, WORK, WORK, WORK, MOVE]
+    },
+    'transferer': {
+        quantity: 0,
+        body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+    }
+};
 
 let roleHarvester = require('role.harvester');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
+let roleTransferer = require('role.transferer');
+let roleMiner = require('role.miner');
 
 module.exports.loop = function () {
     
@@ -44,7 +47,7 @@ module.exports.loop = function () {
         let existings = _.filter(Game.creeps, (creep) => creep.memory.role == type);
         typeCount += `${type}: ${existings.length}/${TYPES[type].quantity}, `;
         
-        if (existings.length < TYPES[type].quantity && continueSpawning) {
+        if (existings.length < TYPES[type].quantity && continueSpawning && AUTO_SPAWN) {
             let newName = type.charAt(0).toUpperCase() + type.slice(1) + Game.time;
             
             switch (Game.spawns['Spawn1'].spawnCreep(TYPES[type].body, newName, {memory: {role: type}})) {
@@ -74,6 +77,8 @@ module.exports.loop = function () {
         }
     }
     console.log(typeCount);
+
+    // TODO: recycle outnumbered creeps
     
     // creeps take action
     for(let name in Game.creeps) {
@@ -84,6 +89,10 @@ module.exports.loop = function () {
             roleUpgrader.run(creep);
         } else if (creep.memory.role == 'builder') {
             roleBuilder.run(creep);
+        } else if (creep.memory.role == 'miner')  {
+            roleMiner.run(creep);
+        } else if (creep.memory.role == 'transferer') {
+            roleTransferer.run(creep);
         } else {
             roleHarvester.run(creep, ROLE_SHORTAGE); // default role harvester
         }

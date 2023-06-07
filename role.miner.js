@@ -14,9 +14,21 @@
 let roleMiner = {
 
     /* @param {Creep} creep */
-    run: function(creep, site) {
-        if (creep.harvest(site) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(site, {visualizePathStyle: {stroke: '#ffaa00'}});
+    run: function(creep) {
+        
+        let sites = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
+            }
+        })
+
+        if (sites.length > 0) {
+            if (creep.pos.getRangeTo(sites[0]) == 0) {
+                let source = creep.pos.findClosestByPath(FIND_SOURCES);
+                creep.harvest(source);
+            } else {
+                creep.moveTo(sites[0], {visualizePathStyle: {stroke: '#ffffff'}});
+            }
         }
 	}
 };
