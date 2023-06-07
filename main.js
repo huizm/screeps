@@ -2,24 +2,24 @@ const AUTO_SPAWN = true;
 const ROLE_SHORTAGE = 'builder';
 const TYPES = {
     'harvester': {
-        quantity: 1,
+        quantity: 0,
         body: [WORK, CARRY, MOVE]
     },
     'builder': {
-        quantity: 1,
-        body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE]
+        quantity: 6,
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'upgrader': {
-        quantity: 1,
+        quantity: 3,
         body: [WORK, CARRY, CARRY, MOVE, MOVE]
     },
     'miner': {
-        quantity: 1,
+        quantity: 3,
         body: [WORK, WORK, WORK, WORK, MOVE]
     },
     'transferer': {
-        quantity: 0,
-        body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        quantity: 3,
+        body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     }
 };
 
