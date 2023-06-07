@@ -28,6 +28,7 @@ let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
 let roleTransferer = require('role.transferer');
 let roleMiner = require('role.miner');
+let roleRecycling = require('role.recycling'); // not included in TYPES
 
 
 /** @param {string} type **/
@@ -70,7 +71,7 @@ module.exports.loop = function () {
         }
     }
     
-    // replenish creeps by type
+    // replenish or recycle creeps by type
     let typeCount = '';
     
     let continueSpawning = true;
@@ -81,9 +82,35 @@ module.exports.loop = function () {
         if (existings.length < TYPES[type].quantity && continueSpawning && AUTO_SPAWN) {
             spawnCreepWithErrorCode(type);
             continueSpawning = false;
+        } else if (existings.length > TYPES[type].quantity && type !== 'harvester') { // recycle outnumbered creeps excluding harvester
+            
+            // get shortest lifetime creeps
+            let toRecycleCount = existings.length - TYPES[type].quantity;
+            let toRecycles = [...existings];
+            while (toRecycles.length > toRecycleCount) {
+                let longestLife = toRecycles[0];
+                for (let toRecycle in toRecycles) {
+                    if (toRecycle.ticksToLive() > longestLife.ticksToLive()) {
+                        longestLife = toRecycle;
+                    }
+                }
+                toRecycles.splice(toRecycles.indexOf(longestLife), 1);
+            }
+
+            // set shortest lifetime creeps role to 'recycling'
+            for (let toRecycle in toRecycles) {
+                toRecycle.memory.role = 'recycling';
+            }
         }
     }
     console.log(typeCount);
+
+    if (true) {
+        // recycle
+        let target = _.filter(Game.creeps,
+            (creep) => {return (creep.memory.role == 'recycling') && (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 0)})[0];
+        Game.spawns['Spawn1'].recycleCreep(target);
+    }
 
     // spawn harvester if in energy shortage
     if (true) {
@@ -97,8 +124,6 @@ module.exports.loop = function () {
         }
     }
 
-    // TODO: recycle outnumbered creeps
-    
     // creeps take action
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
@@ -112,6 +137,8 @@ module.exports.loop = function () {
             roleMiner.run(creep);
         } else if (creep.memory.role == 'transferer') {
             roleTransferer.run(creep);
+        } else if (creep.memory.role == 'recycling') {
+            roleRecycling.run(creep);
         } else {
             roleHarvester.run(creep, ROLE_SHORTAGE); // default role harvester
         }
