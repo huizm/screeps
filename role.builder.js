@@ -45,11 +45,12 @@ let roleBuilder = {
 	    }
 
 	    if (creep.memory.building) {
-	        let targets = creep.room.find(FIND_STRUCTURES, {
+	        let needsRepair = creep.room.find(FIND_STRUCTURES, {
 				filter: (structure) => {
-					return structure.hits < structure.hitsMax
+					return structure.hits < (structure.hitsMax / 30000); // TODO: repair to 1/100, then 1/50, etc.
 				}
-			}) || creep.room.find(FIND_CONSTRUCTION_SITES);
+			});
+			let targets = (needsRepair.length > 0) ? needsRepair : creep.room.find(FIND_CONSTRUCTION_SITES);
 
             if (targets.length) {
 				let repairCode = creep.repair(targets[0]);

@@ -6,19 +6,19 @@ const TYPES = {
         body: [WORK, CARRY, MOVE]
     },
     'builder': {
-        quantity: 6,
+        quantity: 3,
         body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'upgrader': {
         quantity: 3,
-        body: [WORK, CARRY, CARRY, MOVE, MOVE]
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'miner': {
-        quantity: 3,
-        body: [WORK, WORK, WORK, WORK, MOVE]
+        quantity: 2,
+        body: [WORK, WORK, WORK, WORK, CARRY, MOVE]
     },
     'transferer': {
-        quantity: 3,
+        quantity: 2,
         body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     }
 };
