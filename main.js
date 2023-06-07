@@ -5,14 +5,6 @@ const TYPES = {
         quantity: 0,
         body: [WORK, CARRY, MOVE]
     },
-    'builder': {
-        quantity: 3,
-        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
-    },
-    'upgrader': {
-        quantity: 3,
-        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
-    },
     'miner': {
         quantity: 2,
         body: [WORK, WORK, WORK, WORK, CARRY, MOVE]
@@ -20,6 +12,14 @@ const TYPES = {
     'transferer': {
         quantity: 2,
         body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
+    },
+    'builder': {
+        quantity: 3,
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+    },
+    'upgrader': {
+        quantity: 3,
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     }
 };
 
