@@ -30,7 +30,8 @@ let roleTransferer = {
         if (creep.memory.transferring && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.transferring = false;
             creep.say('Harvest!');
-        } else if (!creep.memory.tranferring && creep.store.getFreeCapacity() == 0) {
+        }
+        if (!creep.memory.tranferring && creep.store.getFreeCapacity() == 0) {
             creep.memory.transferring = true;
             creep.say('Transfer!');
         }
