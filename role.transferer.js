@@ -21,7 +21,7 @@ function transferToOtherContainer(creep) {
 }
 
 
-let roleTransferer = {
+let roleTransferer = { // TODO: refactor
 
     /* @param {Creep} creep */
     run: function(creep) {

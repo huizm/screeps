@@ -78,6 +78,18 @@ module.exports.loop = function () {
     }
     console.log(typeCount);
 
+    // spawn harvester if in energy shortage
+    if (true) {
+        let miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+        let transferers = _.filter(Game.creeps, (creep) => creep.memory.role == 'transferer');
+        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+
+        if ((miners.length <= 1 || transferers.length <= 2) && harvesters.length < 3) {
+            Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE], 'EnergySaver' + Game.time, {memory: {role: 'harvester'}});
+            console.log('Spawning harvester to save energy!');
+        }
+    }
+
     // TODO: recycle outnumbered creeps
     
     // creeps take action
