@@ -89,7 +89,7 @@ module.exports.loop = function () {
             let toRecycles = [...existings];
             while (toRecycles.length > toRecycleCount) {
                 let longestLife = toRecycles[0];
-                for (let toRecycle in toRecycles) {
+                for (let toRecycle of toRecycles) {
                     if (toRecycle.ticksToLive > longestLife.ticksToLive) {
                         longestLife = toRecycle;
                     }
@@ -123,9 +123,8 @@ module.exports.loop = function () {
             console.log('Spawning harvester to save energy!');
         } else {
             let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-            for (let harvester in harvesters) {
-                // harvester.memory.role = 'recycling';
-                //FIX: change role to recycling
+            for (let harvester of harvesters) {
+                harvester.memory.role = 'recycling';
             }
         }
     }
