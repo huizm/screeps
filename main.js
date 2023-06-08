@@ -109,7 +109,9 @@ module.exports.loop = function () {
         // recycle
         let target = _.filter(Game.creeps,
             (creep) => {return (creep.memory.role == 'recycling') && (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 1)})[0];
-        Game.spawns['Spawn1'].recycleCreep(target);
+        if (Game.spawns['Spawn1'].recycleCreep(target) == OK) {
+            console.log('Successfully recycled ' + target.name);
+        }
     }
 
     // spawn harvester if in energy shortage
@@ -121,7 +123,7 @@ module.exports.loop = function () {
         if ((miners.length < 1 || transferers.length < 2) && harvesters.length < 3) {
             spawnCreepWithErrorCode('harvester');
             console.log('Spawning harvester to save energy!');
-        } else {
+        } else if (miners.length >= 1 && transferers.length >= 2) {
             let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
             for (let harvester of harvesters) {
                 harvester.memory.role = 'recycling';
