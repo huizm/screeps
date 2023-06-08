@@ -7,10 +7,24 @@
  * mod.thing == 'a thing'; // true
  */
 
+function pickupDroppedEnercy(creep) {
+    let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY);
+
+    if (droppedEnergy && creep.store.getFreeCapacity() > 0 && creep.pos.getRangeTo(droppedEnergy) <= 10) {
+        if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(droppedEnergy);
+        }
+    }
+}
+
+
 let roleHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+        pickupDroppedEnercy(creep);
+
 	    if (creep.store.getFreeCapacity() > 0) {
             let sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {

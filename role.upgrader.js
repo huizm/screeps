@@ -7,6 +7,7 @@
  * mod.thing == 'a thing'; // true
  */
 
+
 function replenishEnergy(creep) {
     let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -30,11 +31,24 @@ function replenishEnergy(creep) {
 };
 
 
+function pickupDroppedEnercy(creep) {
+    let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY);
+
+    if (droppedEnergy && creep.store.getFreeCapacity() > 0 && creep.pos.getRangeTo(droppedEnergy) <= 10) {
+        if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(droppedEnergy);
+        }
+    }
+}
+
+
 let roleUpgrader = {
     
     /** @param {Creep} creep **/
     run: function(creep) {
         
+        pickupDroppedEnercy(creep);
+
         // check and toggle harvesting flag
         if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;

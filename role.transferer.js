@@ -7,6 +7,7 @@
  * mod.thing == 'a thing'; // true
  */
 
+
 function transferToOtherContainer(creep) {
     let targets = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
@@ -22,10 +23,23 @@ function transferToOtherContainer(creep) {
 }
 
 
+function pickupDroppedEnercy(creep) {
+    let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY);
+
+    if (droppedEnergy && creep.store.getFreeCapacity() > 0 && creep.pos.getRangeTo(droppedEnergy) <= 10) {
+        if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(droppedEnergy);
+        }
+    }
+}
+
+
 let roleTransferer = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+        pickupDroppedEnercy(creep);
 
         if (creep.memory.transferring && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.transferring = false;

@@ -11,6 +11,9 @@ let roleRecycling = {
 
     /** @param {Creep} creep */
     run: function(creep) {
+
+        creep.drop(RESOURCE_ENERGY);
+
         let spawn = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_SPAWN;
