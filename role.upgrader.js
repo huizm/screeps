@@ -32,9 +32,14 @@ function replenishEnergy(creep) {
 
 
 function pickupDroppedEnercy(creep) {
-    let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, RESOURCE_ENERGY);
+    let droppedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+		filter: (resource) => {
+			return resource.resourceType == RESOURCE_ENERGY &&
+				creep.pos.getRangeTo(resource) <= 10;
+		}
+	});
 
-    if (droppedEnergy && creep.store.getFreeCapacity() > 0 && creep.pos.getRangeTo(droppedEnergy) <= 10) {
+    if (droppedEnergy && creep.store.getFreeCapacity() > 0) {
         if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
             creep.moveTo(droppedEnergy);
         }
