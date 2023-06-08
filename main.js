@@ -6,15 +6,15 @@ const TYPES = {
         body: [WORK, CARRY, MOVE]
     },
     'miner': {
-        quantity: 2,
-        body: [WORK, WORK, WORK, WORK, CARRY, MOVE]
+        quantity: 1,
+        body: [WORK, WORK, WORK, WORK, MOVE]
     },
     'transferer': {
-        quantity: 2,
+        quantity: 3,
         body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     },
     'builder': {
-        quantity: 3,
+        quantity: 2,
         body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'upgrader': {
@@ -90,7 +90,7 @@ module.exports.loop = function () {
             while (toRecycles.length > toRecycleCount) {
                 let longestLife = toRecycles[0];
                 for (let toRecycle in toRecycles) {
-                    if (toRecycle.ticksToLive() > longestLife.ticksToLive()) {
+                    if (toRecycle.ticksToLive > longestLife.ticksToLive) {
                         longestLife = toRecycle;
                     }
                 }
@@ -99,7 +99,7 @@ module.exports.loop = function () {
 
             // set shortest lifetime creeps role to 'recycling'
             for (let toRecycle in toRecycles) {
-                toRecycle.memory.role = 'recycling';
+                Game.creeps[toRecycle].memory.role = 'recycling';
             }
         }
     }
@@ -108,7 +108,7 @@ module.exports.loop = function () {
     if (true) {
         // recycle
         let target = _.filter(Game.creeps,
-            (creep) => {return (creep.memory.role == 'recycling') && (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 0)})[0];
+            (creep) => {return (creep.memory.role == 'recycling') && (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 1)})[0];
         Game.spawns['Spawn1'].recycleCreep(target);
     }
 
@@ -118,9 +118,53 @@ module.exports.loop = function () {
         let transferers = _.filter(Game.creeps, (creep) => creep.memory.role == 'transferer');
         let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 
-        if ((miners.length <= 1 || transferers.length <= 2) && harvesters.length < 3) {
+        if ((miners.length < 1 || transferers.length < 2) && harvesters.length < 3) {
             spawnCreepWithErrorCode('harvester');
             console.log('Spawning harvester to save energy!');
+        } else {
+            let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+            for (let harvester in harvesters) {
+                // harvester.memory.role = 'recycling';
+                //FIX: change role to recycling
+            }
+        }
+    }
+
+    // towers take action
+    let towers = Game.rooms.W14N42.find(FIND_STRUCTURES, {
+        filter: (structure) => {
+            return structure.structureType == STRUCTURE_TOWER;
+        }
+    });
+
+    for (let tower of towers) {
+        let target;
+
+        // attack
+        target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if (target) {
+            tower.attack(target);
+        }
+
+        // heal
+        target = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+            filter: (myCreep) => {
+                return myCreep.hits < myCreep.hitsMax;
+            }
+        });
+        if (target) {
+            tower.heal(target);
+        }
+
+        // repair
+        target = tower.pos.findClosestByRange(FIND_STRUCTURES, { // tower.pos.findClosestByRange
+            filter: (structure) => {
+                return structure.hits < 30000 && structure.structureType == STRUCTURE_RAMPART;
+            }
+        });
+        // console.log(target);
+        if (target) {
+            tower.repair(target);
         }
     }
 

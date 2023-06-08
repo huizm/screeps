@@ -39,7 +39,9 @@ let roleTransferer = {
 	    if (creep.memory.transferring) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN)
+                    return (structure.structureType == STRUCTURE_EXTENSION
+                        || structure.structureType == STRUCTURE_SPAWN
+                        || structure.structureType == STRUCTURE_TOWER)
                         && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -69,3 +71,4 @@ let roleTransferer = {
 };
 
 module.exports = roleTransferer;
+// TODO: pick up energy on the ground
