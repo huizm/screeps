@@ -7,19 +7,19 @@ const TYPES = {
     },
     'miner': {
         quantity: 1,
-        body: [WORK, WORK, WORK, WORK, MOVE]
+        body: [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE]
     },
     'transferer': {
         quantity: 3,
-        body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
+        body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'builder': {
         quantity: 2,
-        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
     },
     'upgrader': {
         quantity: 3,
-        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     }
 };
 
