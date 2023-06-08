@@ -7,19 +7,19 @@ const TYPES = {
     },
     'miner': {
         quantity: 1,
-        body: [WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE]
+        body: [WORK, WORK, WORK, WORK, WORK, MOVE]
     },
     'transferer': {
         quantity: 3,
-        body: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     },
     'builder': {
         quantity: 2,
-        body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     },
     'upgrader': {
         quantity: 3,
-        body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     }
 };
 
@@ -170,6 +170,12 @@ module.exports.loop = function () {
     // creeps take action
     for(let name in Game.creeps) {
         let creep = Game.creeps[name];
+
+        // recycle old creeps
+        if (creep.ticksToLive <= 50) {
+            creep.memory.role = 'recycling';
+        }
+
         if (creep.memory.role == 'harvester') {
             roleHarvester.run(creep, ROLE_SHORTAGE);
         } else if (creep.memory.role == 'upgrader') {
