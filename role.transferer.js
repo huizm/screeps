@@ -51,19 +51,19 @@ let roleTransferer = {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
-                transferToOtherContainer(creep);
+                // transferToOtherContainer(creep);
             }
         } else {
-            let sources = creep.room.find(FIND_STRUCTURES, {
+            let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_CONTAINER)
-                        && (structure.store[RESOURCE_ENERGY] > 0);
+                        && (structure.store[RESOURCE_ENERGY] > 25);
                 }
             });
 
-            if (sources.length > 0) {
-                if (creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffffff'}});
+            if (source) {
+                if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
         }

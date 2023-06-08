@@ -8,16 +8,16 @@
  */
 
 function replenishEnergy(creep) {
-    let containers = creep.room.find(FIND_STRUCTURES, {
+    let container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
         filter: (structure) => {
             return (structure.structureType == STRUCTURE_CONTAINER)
-                && (structure.store[RESOURCE_ENERGY] > 0);
+                && (structure.store[RESOURCE_ENERGY] > 25);
         }
     });
 	
-	if (containers.length > 0) {
-		if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffffff'}});
+	if (container) {
+		if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}});
         }
 	} else {
 		let sources = creep.room.find(FIND_SOURCES_ACTIVE);
