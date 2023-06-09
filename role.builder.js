@@ -65,8 +65,9 @@ let roleBuilder = {
 	    if (creep.memory.building) {
 	        let needsRepair = creep.room.find(FIND_STRUCTURES, {
 				filter: (structure) => {
-					return (true /* disable rapairing set to false */ &&
-						(structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART) &&
+					return (false /* disable rapairing set to false */ &&
+						(structure.structureType != STRUCTURE_WALL &&
+						structure.structureType != STRUCTURE_RAMPART) &&
 						structure.hits < (structure.hitsMax)); // TODO: detect most damaged structure and fix
 				}
 			});

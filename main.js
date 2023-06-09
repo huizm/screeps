@@ -19,7 +19,7 @@ const TYPES = {
     },
     'upgrader': {
         quantity: 3,
-        body: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
     }
 };
 
@@ -82,7 +82,8 @@ module.exports.loop = function () {
         if (existings.length < TYPES[type].quantity && continueSpawning && AUTO_SPAWN) {
             spawnCreepWithErrorCode(type);
             continueSpawning = false;
-        } else if (existings.length > TYPES[type].quantity && type !== 'harvester') { // recycle outnumbered creeps excluding harvester
+        } else if (existings.length > TYPES[type].quantity && type !== 'harvester') {
+            // recycle outnumbered creeps excluding harvester
             
             // get shortest lifetime creeps
             let toRecycleCount = existings.length - TYPES[type].quantity;
@@ -108,7 +109,9 @@ module.exports.loop = function () {
     if (true) {
         // recycle
         let target = _.filter(Game.creeps,
-            (creep) => {return (creep.memory.role == 'recycling') && (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 1)})[0];
+            (creep) => {return (creep.memory.role == 'recycling') &&
+                (creep.pos.getRangeTo(Game.spawns['Spawn1']) === 1)})[0];
+                
         if (Game.spawns['Spawn1'].recycleCreep(target) == OK) {
             console.log('Successfully recycled ' + target.name);
         }
