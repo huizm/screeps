@@ -39,6 +39,20 @@ function pickupDroppedEnercy(creep) {
 }
 
 
+const SOURCE_CONTAINERS = ['647fd10e660ec84e431f9656', '647fbfeae74af62cbc99bcb0', '647fc99237ef4e597ecfde0e'];
+
+/**@param {StructureContainer} container */
+const isSourceContainer = function(container) {
+    let flag = false;
+
+    for (let source_container of SOURCE_CONTAINERS) {
+        if (container.id === source_container.id) {
+            flag = true;
+        }
+    }
+    return flag;
+};
+
 let roleTransferer = {
 
     /** @param {Creep} creep **/
@@ -61,7 +75,9 @@ let roleTransferer = {
                     return (structure.structureType == STRUCTURE_EXTENSION
                         || structure.structureType == STRUCTURE_SPAWN
                         || structure.structureType == STRUCTURE_TOWER
-                        || structure.structureType == STRUCTURE_STORAGE)
+                        || structure.structureType == STRUCTURE_STORAGE
+                        || (structure.structureType == STRUCTURE_CONTAINER &&
+                            !isSourceContainer(structure)))
                         && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -76,8 +92,9 @@ let roleTransferer = {
         } else {
             let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_CONTAINER)
-                        && (structure.store[RESOURCE_ENERGY] > 25);
+                    return (structure.structureType == STRUCTURE_CONTAINER) &&
+                        (structure.store[RESOURCE_ENERGY] > 25) &&
+                        isSourceContainer(structure);
                 }
             });
 
