@@ -41,13 +41,14 @@ function pickupDroppedEnercy(creep) {
 
 const SOURCE_CONTAINERS = ['647fd10e660ec84e431f9656', '647fbfeae74af62cbc99bcb0', '647fc99237ef4e597ecfde0e'];
 
-/**@param {StructureContainer} container */
+/**@param {*} container */
 const isSourceContainer = function(container) {
     let flag = false;
 
     for (let source_container of SOURCE_CONTAINERS) {
-        if (container.id === source_container.id) {
+        if (container.id === source_container) {
             flag = true;
+            break;
         }
     }
     return flag;
