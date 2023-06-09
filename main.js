@@ -19,7 +19,7 @@ const TYPES = {
     },
     'upgrader': {
         quantity: 3,
-        body: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE]
     }
 };
 
@@ -163,7 +163,10 @@ module.exports.loop = function () {
         // repair
         target = tower.pos.findClosestByRange(FIND_STRUCTURES, { // tower.pos.findClosestByRange
             filter: (structure) => {
-                return structure.hits < 30000 && structure.structureType == STRUCTURE_RAMPART;
+                return (structure.structureType == STRUCTURE_RAMPART && structure.hits < 30000) ||
+                    (structure.hits < structure.hitsMax &&
+                    structure.structureType != STRUCTURE_WALL &&
+                    structure.structureType != STRUCTURE_RAMPART);
             }
         });
         // console.log(target);
@@ -177,7 +180,7 @@ module.exports.loop = function () {
         let creep = Game.creeps[name];
 
         // recycle old creeps
-        if (creep.ticksToLive <= 50) {
+        if (creep.ticksToLive <= 25) {
             creep.memory.role = 'recycling';
         }
 
