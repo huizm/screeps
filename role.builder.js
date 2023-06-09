@@ -20,10 +20,10 @@ function replenishEnergy(creep) {
             creep.moveTo(container, {visualizePathStyle: {stroke: '#ffffff'}});
         }
 	} else {
-		let sources = creep.room.find(FIND_SOURCES_ACTIVE);
-		if (sources.length > 0) {
-			if (creep.harvest(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffffff'}});
+		let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+		if (source) {
+			if (creep.harvest(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				creep.moveTo(source, {visualizePathStyle: {stroke: '#ffffff'}});
 			}
 		}
 	}
