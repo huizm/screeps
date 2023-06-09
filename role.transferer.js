@@ -8,7 +8,7 @@
  */
 
 
-function transferToOtherContainer(creep) {
+function transferToContainer(creep) {
     let targets = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
             return (structure.structureType == STRUCTURE_CONTAINER)
@@ -60,7 +60,8 @@ let roleTransferer = {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION
                         || structure.structureType == STRUCTURE_SPAWN
-                        || structure.structureType == STRUCTURE_TOWER)
+                        || structure.structureType == STRUCTURE_TOWER
+                        || structure.structureType == STRUCTURE_STORAGE)
                         && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -70,7 +71,7 @@ let roleTransferer = {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
-                // transferToOtherContainer(creep);
+                // transferToContainer(creep);
             }
         } else {
             let source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
